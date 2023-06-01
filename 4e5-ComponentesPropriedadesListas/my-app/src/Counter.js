@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App"
 
 
 function Counter(props) {
 
-    const [count, setCount] = useState(props.count);
-    const [meuEstado, setMeuEstado] = useState("somou mais um")
+
+    const [count, setCount] = useState(props.count)
+    // const [meuEstado, setMeuEstado] = useState("somou mais um")
+
+    useEffect(() => {
+        setCount(parseInt(localStorage.getItem("count")))
+
+        return () => {
+            console.log("Não tem mais contador");
+        }
+
+    }, []);
+
+    useEffect(() => {
+        document.title = count
+        localStorage.setItem("count", count)
+    }, [count]);
 
     function add() {
         setCount(count + 1)
-        console.log(meuEstado);
+        // console.log(meuEstado);
     }
 
     return (
@@ -33,13 +48,17 @@ function Counter(props) {
     add(){
        // this.setState({count: this.state.count + 1})
         this.setState((state)=>{return {count: state.count + 1}},()=>{
-            // localStorage.setItem("state", JSON.stringify(this.state))
+            
         })
     }
 
     // componentDidMount(){
     //    this.setState(JSON.parse(localStorage.getItem("state")))
     // }
+
+    // componentDidMount(){
+    // localStorage.setItem("state", JSON.stringify(this.state))
+    //  }
 
     shouldComponentUpdate(){
         return true
